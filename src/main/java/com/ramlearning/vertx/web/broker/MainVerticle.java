@@ -1,6 +1,8 @@
 package com.ramlearning.vertx.web.broker;
 
 import com.ramlearning.vertx.web.broker.assets.AssetsRestApi;
+import com.ramlearning.vertx.web.broker.config.BrokerConfig;
+import com.ramlearning.vertx.web.broker.config.ConfigLoader;
 import com.ramlearning.vertx.web.broker.quotes.QuotesRestApi;
 import com.ramlearning.vertx.web.broker.watchlist.WatchListRestApi;
 import io.vertx.core.AbstractVerticle;
@@ -17,9 +19,11 @@ import org.slf4j.LoggerFactory;
 public class MainVerticle extends AbstractVerticle {
 
   private static final Logger LOG = LoggerFactory.getLogger(MainVerticle.class);
-  public static final int PORT = 8888;
 
   public static void main(String[] args) {
+
+    System.setProperty(ConfigLoader.SERVER_PORT, "9000");
+
     var vertx = Vertx.vertx();
     vertx.exceptionHandler(error -> {
       LOG.error("Unhandled: ", error);
@@ -35,6 +39,22 @@ public class MainVerticle extends AbstractVerticle {
   @Override
   public void start(Promise<Void> startPromise) throws Exception {
 
+    ConfigLoader.load(vertx)
+      .onFailure(startPromise::fail)
+      .onSuccess(configuration -> {
+        LOG.info("Retrieved Configurations: {}", configuration);
+
+        /*
+         * Start the HTTP Server when the config load succeeds
+         */
+
+        startHttpServerAndAttachRoutes(startPromise, configuration);
+      });
+
+
+  }
+
+  private void startHttpServerAndAttachRoutes(Promise<Void> startPromise, BrokerConfig configuration) {
     /*
      * Create a router if we want to make http calls.
      */
@@ -57,10 +77,10 @@ public class MainVerticle extends AbstractVerticle {
     vertx.createHttpServer()
       .requestHandler(restApi)
       .exceptionHandler(error -> LOG.error("HTTP Server error:", error))
-      .listen(PORT, http -> {
+      .listen(configuration.getServerPort(), http -> {
         if(http.succeeded()) {
           startPromise.complete();
-          LOG.info("HTTP server started on port 8888");
+          LOG.info("HTTP server started on port {}", configuration.getServerPort());
         } else {
           startPromise.fail(http.cause());
         }

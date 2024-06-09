@@ -21,6 +21,29 @@ To run your application:
 ./mvnw clean compile exec:java
 ```
 
+== VERT.X Config
+
+* We can use Vert.X config to configure our application.
+* It supports the below formats. JSON, Properties, YAML (using extensions), Hocon (using extensions)
+* It supports multiple stores
+  - System Properties
+  - Environment properties
+  - files
+  - Event Bus
+  - Kubernetes Config Map (using extensions)
+  - & more
+* We can use multiple stores in VertX configuration. It means we can use the same property in multiple stores and can define overriding rules to prioritize a particular store. Environment variables have the highest priority and we can change the priority by modifying the order we add the stores in ConfigRetrieverOptions.
+* To use Vert.X config, use the below dependency in pom.xml
+```
+<dependency>
+  <groupId>io.vertx</groupId>
+  <artifactId>vertx-config</artifactId>
+</dependency>
+```
+
+== TODO
+* Learn about Objects.isNull
+
 == Help
 
 * https://vertx.io/docs/[Vert.x Documentation]

@@ -1,5 +1,6 @@
 package com.ramlearning.vertx.web.broker.watchlist;
 
+import com.ramlearning.vertx.web.broker.AbstractRestApiTest;
 import com.ramlearning.vertx.web.broker.MainVerticle;
 import com.ramlearning.vertx.web.broker.assets.Asset;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -22,13 +23,8 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(VertxExtension.class)
-public class TestWatchListRestApi {
+public class TestWatchListRestApi extends AbstractRestApiTest {
   private static final Logger LOG = LoggerFactory.getLogger(TestWatchListRestApi.class);
-
-  @BeforeEach
-  void deploy_verticle(Vertx vertx, VertxTestContext testContext) {
-    vertx.deployVerticle(new MainVerticle(), testContext.succeeding(id -> testContext.completeNow()));
-  }
 
   /*
    * Vertx Webclient is an asynchronous http client which is quite powerful. It can be used to call other rest apis
@@ -36,7 +32,7 @@ public class TestWatchListRestApi {
    */
   @Test
   void adds_and_returns_watchlist_for_account(Vertx vertx, VertxTestContext testContext) throws Throwable {
-    var client = WebClient.create(vertx, new WebClientOptions().setDefaultPort(MainVerticle.PORT));
+    var client = WebClient.create(vertx, new WebClientOptions().setDefaultPort(TEST_SERVER_PORT));
 
     var accountId = UUID.randomUUID();
     /*
@@ -57,7 +53,7 @@ public class TestWatchListRestApi {
 
   @Test
   void adds_and_deletes_watchlist_for_account(Vertx vertx, VertxTestContext testContext) {
-    var client = WebClient.create(vertx, new WebClientOptions().setDefaultPort(MainVerticle.PORT));
+    var client = WebClient.create(vertx, new WebClientOptions().setDefaultPort(TEST_SERVER_PORT));
 
     var accountId = UUID.randomUUID();
     /*

@@ -1,5 +1,6 @@
 package com.ramlearning.vertx.web.broker.quotes;
 
+import com.ramlearning.vertx.web.broker.AbstractRestApiTest;
 import com.ramlearning.vertx.web.broker.MainVerticle;
 import com.ramlearning.vertx.web.broker.assets.AssetsRestApi;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -17,13 +18,9 @@ import org.slf4j.LoggerFactory;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(VertxExtension.class)
-public class TestQuotesRestApi {
+public class TestQuotesRestApi extends AbstractRestApiTest {
 
   private static final Logger LOG = LoggerFactory.getLogger(TestQuotesRestApi.class);
-  @BeforeEach
-  void deploy_verticle(Vertx vertx, VertxTestContext testContext) {
-    vertx.deployVerticle(new MainVerticle(), testContext.succeeding(id -> testContext.completeNow()));
-  }
 
   /*
    * Vertx Webclient is an asynchronous http client which is quite powerful. It can be used to call other rest apis
@@ -31,7 +28,7 @@ public class TestQuotesRestApi {
    */
   @Test
   void returns_quote_for_asset(Vertx vertx, VertxTestContext testContext) throws Throwable {
-    var client = WebClient.create(vertx, new WebClientOptions().setDefaultPort(MainVerticle.PORT));
+    var client = WebClient.create(vertx, new WebClientOptions().setDefaultPort(TEST_SERVER_PORT));
 
     /*
      * If you expect the test to be a success, use testContext.succeeding in onComplete. Else use testContext.failing.
@@ -50,7 +47,7 @@ public class TestQuotesRestApi {
 
   @Test
   void returns_error_for_na_quote(Vertx vertx, VertxTestContext testContext) {
-    var client = WebClient.create(vertx, new WebClientOptions().setDefaultPort(MainVerticle.PORT));
+    var client = WebClient.create(vertx, new WebClientOptions().setDefaultPort(TEST_SERVER_PORT));
     client.get("/quotes/UNKNOWN")
       .send()
       .onComplete(testContext.succeeding (response -> {

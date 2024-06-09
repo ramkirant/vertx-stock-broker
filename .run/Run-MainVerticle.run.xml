@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run-MainVerticle" type="Application" factoryName="Application">
+    <envs>
+      <env name="SERVER_PORT" value="8888" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="com.ramlearning.vertx.web.broker.MainVerticle" />
+    <module name="vertx-stock-broker" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.ramlearning.vertx.web.broker.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

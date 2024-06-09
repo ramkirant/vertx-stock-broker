@@ -21,7 +21,7 @@
 
     <main.verticle>com.ramlearning.vertx.web.vertx_stock_broker.MainVerticle</main.verticle>
     <launcher.class>io.vertx.core.Launcher</launcher.class>
-    <jackson-databind.version>2.17.0</jackson-databind.version>
+    <jackson.version>2.17.0</jackson.version>
     <lombok.version>1.18.32</lombok.version>
   </properties>
 
@@ -47,6 +47,10 @@
       <artifactId>vertx-web-client</artifactId>
     </dependency>
     <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-config</artifactId>
+    </dependency>
+    <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>1.4.12</version>
@@ -60,7 +64,17 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>${jackson-databind.version}</version>
+      <version>${jackson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>${jackson.version}</version>
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
